@@ -23,96 +23,29 @@ namespace TodoApi.Controllers
 
         public JsonResult Get()
         {
-            string query = @"SELECT * FROM Todo WHERE Status = 1 ORDER BY 1 DESC";
-            DataTable dt = new DataTable();
-            SqlDataReader sqlDataReader;
-            using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("AttendanceAppCon")))
-            {
-                myCon.Open();
-                using (SqlCommand sc = new SqlCommand(query, myCon))
-                {
-                    sqlDataReader = sc.ExecuteReader();
-                    dt.Load(sqlDataReader);
-                    sqlDataReader.Close();
-                    myCon.Close();
-                }
-            }
+            System.Data.DataTable dt = new Todo().Get_All(_configuration);
             return new JsonResult(dt);
         }
 
         [HttpPost]
         public JsonResult Post(Todo todo)
         {
-            string query = @"INSERT INTO Todo VALUES(@Todo,@Category,@Priority,1,@Due_Date)";
-            DataTable dt = new DataTable();
-            SqlDataReader sqlDataReader;
-            using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("AttendanceAppCon")))
-            {
-                myCon.Open();
-                using (SqlCommand sc = new SqlCommand(query, myCon))
-                {
-                    sc.Parameters.AddWithValue("@Todo", todo.todo);
-                    sc.Parameters.AddWithValue("@Category", todo.Category);
-                    sc.Parameters.AddWithValue("@Priority", todo.Priority);
-                    sc.Parameters.AddWithValue("@Due_Date", todo.Due_Date);
-                    sqlDataReader = sc.ExecuteReader();
-                    dt.Load(sqlDataReader);
-                    sqlDataReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Todo Added Successfully");
+            string res = new Todo().Insert_One(_configuration, todo);
+            return new JsonResult(res);
         }
 
         [HttpPut]
         public JsonResult Put(Todo todo)
         {
-            string query = @"UPDATE Todo 
-                            SET Todo = @Todo,
-                                Category = @Category,
-                                priority = @Priority,
-                                Due_Date = @Due_Date
-                            WHERE TID = @TID";
-            DataTable dt = new DataTable();
-            SqlDataReader sqlDataReader;
-            using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("AttendanceAppCon")))
-            {
-                myCon.Open();
-                using (SqlCommand sc = new SqlCommand(query, myCon))
-                {
-                    sc.Parameters.AddWithValue("@Todo", todo.todo);
-                    sc.Parameters.AddWithValue("@Category", todo.Category);
-                    sc.Parameters.AddWithValue("@Priority", todo.Priority);
-                    sc.Parameters.AddWithValue("@Due_Date", todo.Due_Date);
-                    sc.Parameters.AddWithValue("@TID", todo.TID);
-                    sqlDataReader = sc.ExecuteReader();
-                    dt.Load(sqlDataReader);
-                    sqlDataReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Todo Updated Successfully");
+            string res = new Todo().Update_One(_configuration, todo);
+            return new JsonResult(res);
         }
 
         [HttpDelete]
         public JsonResult Delete(Todo todo)
         {
-            string query = @"UPDATE Todo SET Status = 0 WHERE TID = @TID";
-            DataTable dt = new DataTable();
-            SqlDataReader sqlDataReader;
-            using (SqlConnection myCon = new SqlConnection(_configuration.GetConnectionString("AttendanceAppCon")))
-            {
-                myCon.Open();
-                using (SqlCommand sc = new SqlCommand(query, myCon))
-                {
-                    sc.Parameters.AddWithValue("@TID", todo.TID);
-                    sqlDataReader = sc.ExecuteReader();
-                    dt.Load(sqlDataReader);
-                    sqlDataReader.Close();
-                    myCon.Close();
-                }
-            }
-            return new JsonResult("Todo Deleted Successfully");
+            string res = new Todo().Delete_One(_configuration, todo);
+            return new JsonResult(res);
         }
     }
 }
