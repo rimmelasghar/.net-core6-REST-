@@ -14,16 +14,6 @@ namespace TodoApi.Models
         public int Status { get; set; }
         public string? Due_Date { get; set; }
 
-        //public DataTable Todo_GetAll()
-        //{
-        //    DataTable dt = new DataTable();
-        //    SqlCommand sc = new SqlCommand("SELECT * FROM tbl_TimeSlot", Connection.GetConnection());
-        //    sc.CommandType = CommandType.Text;
-        //    SqlDataAdapter sda = new SqlDataAdapter(sc);
-        //    sda.Fill(dt);
-        //    return dt;
-        //}
-
         public DataTable Get_All(IConfiguration configuration)
         {
             string query = @"SELECT * FROM Todo WHERE Status = 1 ORDER BY 1 DESC";
