@@ -30,5 +30,19 @@ namespace TodoApi.Controllers
             return new JsonResult(res);
 
         }
+
+        [HttpPut]
+        public JsonResult Put(TimeSlot timeSlot)
+        {
+            string res = new TimeSlot().Update_One(_configuration, timeSlot);
+            return new JsonResult(res);
+        }
+
+        [HttpDelete]
+        public JsonResult Delete(TimeSlot timeSlot)
+        {
+            string res = new TimeSlot().Delete_One(_configuration, timeSlot);
+            return new JsonResult(res);
+        }
     }
 }
